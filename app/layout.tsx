@@ -1,5 +1,6 @@
-import Navbar from './components/navbar/Navbar'
 import './globals.css'
+
+import Navbar from './components/navbar/Navbar'
 
 export const metadata = {
   title: 'URL Shortener',
