@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
     // Hash URL String with MD5 and encode it to base64 then get only the first 7 characters.
     const shortUrl = createHash('md5').update(url).digest('base64');
-    return NextResponse.json({ shortUrl: shortUrl.slice(0, 7), testing: validateSomething() });
+    return NextResponse.json({ shortUrl: shortUrl.slice(0, 7)});
   } catch (error) {
     console.log('ENDPOINT: API/URL METHOD:POST MESSAGE: ', error);
     return new NextResponse('Error', { status: 500 });
