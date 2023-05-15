@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     // Fake delay for Loading State TEST.
 
     const delay = (ms: number) =>
-      new Promise((resolve) => setTimeout(resolve, ms));
+    new Promise((resolve) => setTimeout(resolve, ms));
     await delay(1000);
 
     // Get URL String from body and validate
@@ -23,6 +23,7 @@ export async function POST(request: Request) {
     const shortUrl_string = createHash('md5')
       .update(url)
       .digest('base64')
+      .replaceAll(/[+/=\\]/g, '')
       .slice(0, 7);
 
     // Check if alias already exists on DB, if true return alias.
