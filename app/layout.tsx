@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html className=" bg-gray-50 " data-theme="light" lang="en">
+    <html className="base-100" data-theme="light" lang="en">
         <body>
         <Navbar />
         {children}

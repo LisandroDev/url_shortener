@@ -11,7 +11,7 @@ const ThemeButton = () => {
 
 
   return (
-      <label className="swap swap-rotate">
+      <label className="swap swap-rotate  btn-ghost rounded-md">
         <input type="checkbox" defaultChecked={theme === 'light' ? true : false}  onClick={() => handleClick()}/>
 
         <svg
