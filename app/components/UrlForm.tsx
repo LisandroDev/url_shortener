@@ -28,7 +28,7 @@ const UrlForm = () => {
   };
 
   return (
-    <div className='w-128 flex flex-col gap-y-4  items-center py-12 md:px-24  rounded-md bg-opacity-5 bg-slate-500'>
+    <div className='w-full flex flex-col gap-y-4  items-center py-12 md:px-24  rounded-md  bg-base-200 bg-opacity-75'>
       <form
         className='flex flex-col md:flex-row items-center gap-y-4'
         onSubmit={handleSubmit(onSubmit)}
