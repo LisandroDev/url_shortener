@@ -1,3 +1,5 @@
+const { secondary } = require('daisyui/src/colors/colorNames');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -16,6 +18,27 @@ module.exports = {
   },
   plugins: [require('daisyui')],
   daisyui: {
-    themes: ['light','dark']
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+          primary: "blue",
+          "primary-focus": "mediumblue",
+          "base-100": "#F2F2F2"
+        },
+        dark: {
+          ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
+          primary: "#BB86FC",
+          "primary-content": "#000000",
+          secondary: "#03DAC6",
+          "secondary-content": "#000000",
+          "base-100": "#121212",
+          "base-200": "#121212",
+          "base-300": "#121212",
+          "base-content": "#FFFFFF"
+
+        }
+      }
+    ]
   }
 }
