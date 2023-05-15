@@ -4,10 +4,12 @@ import axios from 'axios';
 import isUrl from 'validator/lib/isURL';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import useBaseUrl from '../hooks/useBaseUrl';
 
 const UrlForm = () => {
   const [newUrl, setNewUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const baseUrl = useBaseUrl()
 
   const {
     handleSubmit,
@@ -61,7 +63,7 @@ const UrlForm = () => {
         </button>
       </form>{' '}
       {newUrl && (
-        <p className='text-md underline underline-offset-4'>{`Short url generated: ${newUrl}`}</p>
+        <p className='text-md underline underline-offset-4'>{`Short url generated: ${baseUrl + '/' + newUrl}`}</p>
       )}
     </div>
   );
