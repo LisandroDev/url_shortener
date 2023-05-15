@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
+import prisma from '../../libs/prismadb';
 import isURL from 'validator/lib/isURL';
-
 
 export async function POST(request: Request) {
   try {
@@ -20,8 +20,33 @@ export async function POST(request: Request) {
     }
 
     // Hash URL String with MD5 and encode it to base64 then get only the first 7 characters.
-    const shortUrl = createHash('md5').update(url).digest('base64');
-    return NextResponse.json({ shortUrl: shortUrl.slice(0, 7)});
+    const shortUrl_string = createHash('md5')
+      .update(url)
+      .digest('base64')
+      .slice(0, 7);
+
+    // Check if alias already exists on DB, if true return alias.
+
+    const url_db = await prisma.shortURL.findFirst({
+      where: {
+        alias: shortUrl_string,
+      },
+    });
+
+    if (url_db) {
+      return NextResponse.json({ shortUrl: url_db.alias });
+    }
+
+    // Save URL to DB.
+
+    const shortUrl = await prisma.shortURL.create({
+      data: {
+        alias: shortUrl_string,
+        fullUrl: url,
+      },
+    });
+
+    return NextResponse.json({ shortUrl: shortUrl.alias });
   } catch (error) {
     console.log('ENDPOINT: API/URL METHOD:POST MESSAGE: ', error);
     return new NextResponse('Error', { status: 500 });
