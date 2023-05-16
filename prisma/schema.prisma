@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 
@@ -18,4 +19,15 @@ model ShortURL {
   views Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  owner User? @relation(fields: [ownerId], references: [id])
+  ownerId Int?
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String? @unique
+  hashedPassword String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  shortUrls ShortURL[]
 }
