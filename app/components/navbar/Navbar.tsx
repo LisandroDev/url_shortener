@@ -1,13 +1,21 @@
-import ThemeButton from "./themeButton/themeButton";
+import ThemeButton from './themeButton/themeButton';
+import User from './user/User';
 
 const Navbar = () => {
+
   return (
-    <nav className="navbar bg-base-300 ">
-      <a className="btn btn-ghost normal-case sm:text-sm md:text-xl">
+
+    <div className="navbar bg-base-300">
+  <div className="flex-1">
+  <a href="/" className="btn btn-ghost normal-case sm:text-sm md:text-xl">
         UrlShortener
       </a>
-      <ThemeButton />
-    </nav>
+  </div>
+  <div className="flex-none gap-2 mr-8">
+  <ThemeButton />
+    <User />
+  </div>
+</div>
   );
 };
 
