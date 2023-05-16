@@ -1,5 +1,4 @@
 import UrlForm from './components/UrlForm';
-import Modal from '../components/modals/Modal';
 
 const Page = () => {
   return (

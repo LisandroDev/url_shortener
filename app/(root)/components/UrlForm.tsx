@@ -9,7 +9,7 @@ import useBaseUrl from '../../hooks/useBaseUrl';
 const UrlForm = () => {
   const [newUrl, setNewUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const baseUrl = useBaseUrl()
+  const baseUrl = useBaseUrl();
 
   const {
     handleSubmit,
@@ -63,7 +63,13 @@ const UrlForm = () => {
         </button>
       </form>{' '}
       {newUrl && (
-        <p className='text-md underline underline-offset-4'>{`Short url generated: ${baseUrl + '/' + newUrl}`}</p>
+        <p className='text-md '>
+          Short url generated:{' '}
+          <a
+            href={`${baseUrl + '/' + newUrl}`}
+            className='ml-4 link link-success  font-bold'
+          >{`${baseUrl + '/' + newUrl}`}</a>
+        </p>
       )}
     </div>
   );
