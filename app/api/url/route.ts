@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ shortUrl: shortUrl.alias });
   } catch (error) {
-    console.log('ENDPOINT: API/URL METHOD:POST MESSAGE: ', error);
+    console.log('ENDPOINT: API/URL | METHOD:POST MESSAGE: ', error);
     return new NextResponse('Error', { status: 500 });
   }
 }
