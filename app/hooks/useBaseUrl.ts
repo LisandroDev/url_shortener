@@ -1,9 +1,7 @@
-'use client';
-
 const useBaseUrl = () => {
-    if (typeof window !== "undefined") {
-        return window.location.origin
-      }
-}
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+};
 
-export default useBaseUrl
+export default useBaseUrl;

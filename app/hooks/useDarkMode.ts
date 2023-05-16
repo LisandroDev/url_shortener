@@ -1,29 +1,27 @@
-"use client";
+import { useEffect, useState } from 'react';
 
-import { useEffect, useState } from "react";
-
-type themes = "light" | "dark";
+type themes = 'light' | 'dark';
 
 const useDarkMode = () => {
-  const [theme, setTheme] = useState<themes>("light");
+  const [theme, setTheme] = useState<themes>('light');
 
   useEffect(() => {
     const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+      '(prefers-color-scheme: dark)'
     ).matches;
     if (prefersDark) {
-      setTheme("dark");
+      setTheme('dark');
     }
   }, []);
 
   useEffect(() => {
-    if (document.querySelector("html")?.hasAttribute("data-theme")) {
-      document.querySelector("html")?.setAttribute("data-theme", theme);
+    if (document.querySelector('html')?.hasAttribute('data-theme')) {
+      document.querySelector('html')?.setAttribute('data-theme', theme);
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    theme === "dark" ? setTheme("light") : setTheme("dark");
+    theme === 'dark' ? setTheme('light') : setTheme('dark');
   };
 
   return { theme, toggleTheme };
