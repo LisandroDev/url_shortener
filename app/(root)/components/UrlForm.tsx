@@ -1,10 +1,10 @@
 'use client';
 
 import axios from 'axios';
-import isUrl from 'validator/lib/isURL';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import useBaseUrl from '../../hooks/useBaseUrl';
+import isURL from 'validator/lib/isURL';
 
 const UrlForm = () => {
   const [newUrl, setNewUrl] = useState<string>('');
@@ -40,7 +40,7 @@ const UrlForm = () => {
             {...register('url', {
               required: true,
               validate: {
-                validUrl: (inputValue: string) => isUrl(inputValue),
+                validUrl: (inputValue: string) => isURL(inputValue),
               },
             })}
             type='text'

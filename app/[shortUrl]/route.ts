@@ -14,7 +14,6 @@ export async function GET(request: NextRequest) {
     where: { alias: shortUrl_string },
   });
 
-  console.log('test: ', url_db?.fullUrl);
 
   if (url_db) {
     url_db.fullUrl.startsWith('https://') ||
