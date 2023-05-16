@@ -1,3 +1,5 @@
+'use client'
+
 import Modal from '../../Modal';
 import AuthSocialButton from './AuthSocialButton';
 import {BsGithub, BsGoogle} from 'react-icons/bs'
