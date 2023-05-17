@@ -3,6 +3,8 @@
 import Modal from '../../Modal';
 import AuthSocialButton from './AuthSocialButton';
 import {BsGithub, BsGoogle} from 'react-icons/bs'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+
 
 
 const SignUp = () => {
