@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import Login from './Login';
+import { useSession } from 'next-auth/react';
 import SignIn from './Signup'
 
 const User = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const session = useSession();
 
-  if (isAuthenticated === true) {
+  if (session?.status === 'authenticated') {
     return (
       <div className='dropdown dropdown-end'>
         <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
