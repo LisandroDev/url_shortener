@@ -13,7 +13,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ children, title, id, buttonLabel, submittable, submitLabel, handleClick }) => {
   return (
     <>
-      <label htmlFor={id} className='btn btn-primary btn-sm'>
+      <label htmlFor={id} className='btn btn-primary btn-xs md:btn-sm'>
         {buttonLabel}
       </label>
       <input type='checkbox' id={id} className='modal-toggle' />
