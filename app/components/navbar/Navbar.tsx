@@ -5,7 +5,7 @@ const Navbar = () => {
 
   return (
 
-    <div className="navbar bg-base-300">
+    <header className="navbar bg-base-300">
   <div className="flex-1">
   <a href="/" className="btn btn-ghost normal-case sm:text-sm md:text-xl">
         UrlShortener
@@ -15,7 +15,7 @@ const Navbar = () => {
   <ThemeButton />
     <User />
   </div>
-</div>
+</header>
   );
 };
 
