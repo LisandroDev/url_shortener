@@ -8,12 +8,13 @@ interface ModalProps {
   submittable?: boolean;
   submitLabel?: string;
   handleClick?: () => void;
+  disabled?: boolean;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, title, id, buttonLabel, submittable, submitLabel, handleClick }) => {
+const Modal: React.FC<ModalProps> = ({ children, title, id, buttonLabel, disabled, submittable, submitLabel, handleClick }) => {
   return (
     <>
-      <label htmlFor={id} className='btn btn-primary btn-xs md:btn-sm'>
+      <label htmlFor={id}  className='btn btn-primary btn-xs md:btn-sm'>
         {buttonLabel}
       </label>
       <input type='checkbox' id={id} className='modal-toggle' />
@@ -22,7 +23,7 @@ const Modal: React.FC<ModalProps> = ({ children, title, id, buttonLabel, submitt
           <h3 className='font-bold text-lg'>{title}</h3>
           {children}
           <div className='modal-action flex flex-row items-center'>
-            {submittable && <button onClick={handleClick} className="btn btn-sm">{submitLabel}</button>}
+            {submittable && <button onClick={handleClick} disabled={disabled} className="btn btn-sm">{submitLabel}</button>}
             <label htmlFor={id} className='btn btn-sm'>
               Close
             </label>
