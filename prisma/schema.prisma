@@ -26,7 +26,31 @@ model User {
   id Int @id @default(autoincrement())
   email String? @unique
   hashedPassword String?
+  emailVerified  DateTime?
+  image String?
+  name String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   shortUrls ShortURL[]
+
+  accounts Account[]
+}
+
+model Account {
+  id Int @id @default(autoincrement()) 
+  userId             Int   
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  
+  access_token       String?  
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  
+  session_state      String?
+
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
 }

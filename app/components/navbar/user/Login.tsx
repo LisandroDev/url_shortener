@@ -27,12 +27,29 @@ const Login = () => {
           return
         }
 
-        if (callback?.ok) {
+        if (callback?.ok && callback?.error) {
           toast.success("Log in successful")
         }
       })
       .finally(() => setIsLoading(false));
   };
+
+  const socialAction = (action: string) => {
+    setIsLoading(true)
+
+    signIn(action, { redirect: false })
+    .then((callback) => {
+      if (callback?.error) {
+        toast.error(" Invalid Credentials !")
+        return
+      }
+
+      if (callback?.ok && callback?.error) {
+        toast.success("Log in successful")
+      }
+    })
+    .finally(() => setIsLoading(false));
+  }
 
   return (
     <>
@@ -71,12 +88,12 @@ const Login = () => {
             <AuthSocialButton
               icon={BsGithub}
               disabled={isLoading}
-              onClick={() => console.log('test')}
+              onClick={() => socialAction('github')}
             />
             <AuthSocialButton
               icon={BsGoogle}
               disabled={isLoading}
-              onClick={() => console.log('test')}
+              onClick={() => socialAction('google')}
             />
           </div>
         </form>

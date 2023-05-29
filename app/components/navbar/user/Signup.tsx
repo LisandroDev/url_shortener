@@ -51,6 +51,23 @@ const SignUp = () => {
       });
   };
 
+  const socialAction = (action: string) => {
+    setIsLoading(true)
+
+    signIn(action, { redirect: false })
+    .then((callback) => {
+      if (callback?.error) {
+        toast.error(" Invalid Credentials !")
+        return
+      }
+
+      if (callback?.ok && callback?.error) {
+        toast.success("Log in successful")
+      }
+    })
+    .finally(() => setIsLoading(false));
+  }
+
   return (
     <>
       <Modal
@@ -92,15 +109,15 @@ const SignUp = () => {
           </div>
           <div className='divider mt-8 mb-8'>Or continue with</div>
           <div className='flex gap-x-4'>
-            <AuthSocialButton
+          <AuthSocialButton
               icon={BsGithub}
               disabled={isLoading}
-              onClick={() => console.log('test')}
+              onClick={() => socialAction('github')}
             />
             <AuthSocialButton
               icon={BsGoogle}
               disabled={isLoading}
-              onClick={() => console.log('test')}
+              onClick={() => socialAction('google')}
             />
           </div>
         </form>
