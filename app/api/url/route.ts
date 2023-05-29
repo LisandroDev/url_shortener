@@ -2,9 +2,15 @@ import { NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import prisma from '../../libs/prismadb';
 import isURL from 'validator/lib/isURL';
+import getCurrentUser from '@/app/actions/getCurrentUser';
 
 export async function POST(request: Request) {
   try {
+
+    // Get User Session
+
+    const currentUser = await getCurrentUser();
+
     // Fake delay for Loading State TEST.
 
     const delay = (ms: number) =>
@@ -13,11 +19,26 @@ export async function POST(request: Request) {
 
     // Get URL String from body and validate
     const body = await request.json();
-    const { url } = body;
+    const { url, customAlias } = body;
 
     if (!isURL(url)) {
       throw new Error('Url in request is not a valid one!');
     }
+
+
+    // If user logged and custom alias then create shorturl with alias provided 
+    if(currentUser && customAlias){
+      const shortUrl = await prisma.shortURL.create({
+        data: {
+          alias: customAlias,
+          fullUrl: url,
+          ownerId: currentUser.id
+        },
+      });
+
+      return NextResponse.json({ shortUrl: shortUrl.alias });
+    }
+
 
     // Hash URL String with MD5 and encode it to base64 then get only the first 7 characters.
     const shortUrl_string = createHash('md5')

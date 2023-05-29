@@ -5,11 +5,13 @@ import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import useBaseUrl from '../../hooks/useBaseUrl';
 import isURL from 'validator/lib/isURL';
+import { useSession } from 'next-auth/react';
 
 const UrlForm = () => {
   const [newUrl, setNewUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const baseUrl = useBaseUrl();
+  const session = useSession();
 
   const {
     handleSubmit,
@@ -18,7 +20,7 @@ const UrlForm = () => {
   } = useForm<FieldValues>({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
-    defaultValues: { url: '' },
+    defaultValues: { url: '', customAlias: null },
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -30,9 +32,9 @@ const UrlForm = () => {
   };
 
   return (
-    <div className='w-full flex flex-col gap-y-4  items-center py-12 md:px-24  rounded-md  bg-base-200 bg-opacity-75'>
+    <section className='w-full flex flex-col gap-y-4  items-center py-12 md:px-24  rounded-md  bg-base-200 bg-opacity-75'>
       <form
-        className='flex flex-col md:flex-row items-center gap-y-4'
+        className='sm:ml-28 px-4 flex flex-col md:flex-row items-center gap-y-4'
         onSubmit={handleSubmit(onSubmit)}
       >
         <div>
@@ -50,6 +52,15 @@ const UrlForm = () => {
             }`}
             disabled={isLoading}
           />
+          {session?.status === 'authenticated' && <input  type='text'
+            placeholder='Custom Alias'
+            {...register('customAlias', {
+              required: false
+            })}
+            className={`input input-bordered mt-8  h-10 w-32 ring-2 max-w-xs ${
+              errors.url ? 'focus:ring-rose-500' : ''
+            }`}
+            disabled={isLoading}></input>}
         </div>
 
         <button
@@ -71,7 +82,7 @@ const UrlForm = () => {
           >{`${baseUrl + '/' + newUrl}`}</a>
         </p>
       )}
-    </div>
+    </section>
   );
 };
 
