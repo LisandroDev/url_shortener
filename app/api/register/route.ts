@@ -12,6 +12,12 @@ export async function POST(request: NextRequest) {
       throw new Error('Not a valid email');
     }
 
+    const emailDB = await prisma.user.findUnique({where:{email: email}})
+
+    if(emailDB){
+      return NextResponse.json({error: 'Email already registered'})
+    }
+    
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({
