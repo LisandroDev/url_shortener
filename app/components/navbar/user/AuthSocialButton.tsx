@@ -3,16 +3,19 @@ import { IconType } from 'react-icons';
 interface AuthSocialButtonProps {
   icon: IconType;
   onClick: () => void;
+  disabled: boolean;
 }
 
 const AuthSocialButton: React.FC<AuthSocialButtonProps> = ({
   icon: Icon,
   onClick,
+  disabled
 }) => {
   return (
     <button
       type='button'
       onClick={onClick}
+      disabled={disabled}
       className='
             inline-flex
             btn

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Login from './Login';
 import { useSession } from 'next-auth/react';
 import SignIn from './Signup'
+import { signOut } from 'next-auth/react';
 
 const User = () => {
   const session = useSession();
@@ -30,7 +31,7 @@ const User = () => {
             <a>Settings</a>
           </li>
           <li>
-            <a>Logout</a>
+            <a onClick={() => signOut()}>Logout</a>
           </li>
         </ul>
       </div>

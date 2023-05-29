@@ -1,17 +1,16 @@
-'use client'
+'use client';
 
 import Modal from '../../Modal';
 import AuthSocialButton from './AuthSocialButton';
 import axios from 'axios';
-import {BsGithub, BsGoogle} from 'react-icons/bs'
+import { BsGithub, BsGoogle } from 'react-icons/bs';
 import { useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
-
-
+import { toast } from 'react-toastify';
+import isEmail from 'validator/lib/isEmail';
 
 const SignUp = () => {
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -21,21 +20,36 @@ const SignUp = () => {
   } = useForm<FieldValues>({ defaultValues: { email: '', password: '' } });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    axios.post('/api/register', data)
-    .then(() => signIn('credentials', {
-      ...data,
-      redirect:false
-    }))
-    .then((callback) => {
-      if (callback?.error){
-        console.log('Invalid Credentials')
-      }
-      
-    })
-    .finally(() => setIsLoading(false))
+    setIsLoading(true);
+    axios
+      .post('/api/register', data)
+      .then((response) => {
+        if(response.data.error){
+          throw new Error(response.data.error)
+        };
+      })
+      .then(() =>
+        signIn('credentials', {
+          ...data,
+          redirect: false,
+        })
+      )
+      .then((callback) => {
+        if (callback?.error) {
+          toast.error(callback.error);
+          return
+        }
+
+        if (callback?.ok) {
+          toast.success('Successful');
+        }
+      })
+      .finally(() => setIsLoading(false))
+      .catch( error => {
+        toast.error(error.message)
+        setIsLoading(false)
+      });
   };
-
-
 
   return (
     <>
@@ -46,34 +60,48 @@ const SignUp = () => {
         submittable={true}
         submitLabel='Sign up'
         handleClick={handleSubmit(onSubmit)}
+        disabled={isLoading}
       >
         <form className='mt-8 w-full'>
           <div className='flex flex-col gap-8'>
             <input
+              disabled={isLoading}
               type='text'
               placeholder='Email'
-              {...register('email', { required: true })}
-              className='input input-bordered'
+              {...register('email', {
+                required: true,
+                validate: {
+                  validEmail: (inputValue: string) => isEmail(inputValue),
+                },
+              })}
+              className={`input input-bordered ${
+                errors.email ? ' border-rose-600 focus:ring-rose-500' : ''
+              }`}
             />
             <input
               type='password'
+              disabled={isLoading}
               placeholder='Password'
               required={true}
-              {...register('password', { required: true })}
-              className='input input-bordered'
-            />
-            <input
-              type='password'
-              placeholder='Confirm Password'
-              required={true}
-              {...register('password', { required: true })}
-              className='input input-bordered'
+              {...register('password', { required: true, minLength: 8, maxLength:16 })}
+              className={`input input-bordered ${
+                errors.password ? ' border-rose-600 focus:ring-rose-500' : ''
+              }`
+              }
             />
           </div>
           <div className='divider mt-8 mb-8'>Or continue with</div>
           <div className='flex gap-x-4'>
-          <AuthSocialButton icon={BsGithub} onClick={() => console.log('test')}/>
-          <AuthSocialButton icon={BsGoogle} onClick={() => console.log('test')}/>
+            <AuthSocialButton
+              icon={BsGithub}
+              disabled={isLoading}
+              onClick={() => console.log('test')}
+            />
+            <AuthSocialButton
+              icon={BsGoogle}
+              disabled={isLoading}
+              onClick={() => console.log('test')}
+            />
           </div>
         </form>
       </Modal>

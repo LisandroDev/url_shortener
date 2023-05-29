@@ -5,8 +5,9 @@ import { BsGithub, BsGoogle } from 'react-icons/bs';
 import AuthSocialButton from './AuthSocialButton';
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import isEmail from 'validator/lib/isEmail';
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -15,18 +16,19 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FieldValues>({ defaultValues: { email: '', password: '' } });
+  } = useForm<FieldValues>({ defaultValues: { email: '', password: '' }, reValidateMode: 'onChange'});
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
     signIn('credentials', { ...data, redirect: false })
       .then((callback) => {
         if (callback?.error) {
-          console.log('Invalid credentials');
+          toast.error(" Invalid Credentials !")
+          return
         }
 
         if (callback?.ok) {
-          console.log('ok');
+          toast.success("Log in successful")
         }
       })
       .finally(() => setIsLoading(false));
@@ -41,6 +43,7 @@ const Login = () => {
         submitLabel='Log in'
         submittable={true}
         handleClick={handleSubmit(onSubmit)}
+        disabled={isLoading}
       >
         {' '}
         <form className='mt-8 w-full' onSubmit={handleSubmit(onSubmit)}>
@@ -48,7 +51,10 @@ const Login = () => {
             <input
               type='text'
               placeholder='Email'
-              {...register('email', { required: true })}
+              disabled={isLoading}
+              {...register('email', { required: true, validate: {
+                validEmail: (inputValue: string) => isEmail(inputValue)
+              }})}
               className='input input-bordered'
             />
             <input
@@ -56,6 +62,7 @@ const Login = () => {
               placeholder='Password'
               {...register('password', { required: true })}
               required={true}
+              disabled={isLoading}
               className='input input-bordered'
             />
           </div>
@@ -63,10 +70,12 @@ const Login = () => {
           <div className='flex gap-x-4'>
             <AuthSocialButton
               icon={BsGithub}
+              disabled={isLoading}
               onClick={() => console.log('test')}
             />
             <AuthSocialButton
               icon={BsGoogle}
+              disabled={isLoading}
               onClick={() => console.log('test')}
             />
           </div>
