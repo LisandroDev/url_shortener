@@ -2,6 +2,7 @@ import './globals.css';
 
 import Navbar from './components/navbar/Navbar';
 import AuthContext from './context/AuthContext';
+import ToasterContext from './context/ToasterContext';
 
 export const metadata = {
   title: 'URL Shortener',
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html className='base-100' data-theme='light' lang='en'>
       <body>
         <AuthContext>
+          <ToasterContext />
           <Navbar />
           {children}
         </AuthContext>
