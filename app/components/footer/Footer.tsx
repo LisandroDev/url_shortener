@@ -11,9 +11,10 @@ const Footer = () => {
     <p>URL Shortener by Lisandro Rubianes</p>
   </div> 
   <div className="grid-flow-col gap-4 place-self-center md:place-self-center md:justify-self-end">
-    <a><TfiGithub size={24}/>
+    <a href='https://github.com/LisandroDev' target='_blank'>
+      <TfiGithub size={24}/>
     </a> 
-    <a>
+    <a href='https://www.linkedin.com/in/lisandrorubianes/' target='_blank'>
         <BsLinkedin  size={24}/>
     </a>
 
