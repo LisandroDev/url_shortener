@@ -6,6 +6,7 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import useBaseUrl from '../../hooks/useBaseUrl';
 import isURL from 'validator/lib/isURL';
 import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 const UrlForm = () => {
   const [newUrl, setNewUrl] = useState<string>('');
@@ -28,7 +29,8 @@ const UrlForm = () => {
     axios
       .post('/api/url', data)
       .then((res) => setNewUrl(res.data.shortUrl))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoading(false))
+      .catch((error) => toast.error('Fail'));
   };
 
   return (
