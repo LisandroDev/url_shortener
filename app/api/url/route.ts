@@ -7,17 +7,16 @@ import getCurrentUser from '@/app/actions/getCurrentUser';
 export async function POST(request: Request) {
   try {
 
-    // Get User Session
-
     const currentUser = await getCurrentUser();
 
     // Fake delay for Loading State TEST.
 
     const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+      new Promise((resolve) => setTimeout(resolve, ms));
     await delay(1000);
 
     // Get URL String from body and validate
+    
     const body = await request.json();
     const { url, customAlias } = body;
 
@@ -25,27 +24,37 @@ export async function POST(request: Request) {
       throw new Error('Url in request is not a valid one!');
     }
 
+    // If Alias provided and User logged.
+   
+    if (currentUser && customAlias) {
 
-    // If user logged and custom alias then create shorturl with alias provided 
-    if(currentUser && customAlias){
+      const alias_db = await prisma.shortURL.findFirst({ where: {
+        alias: customAlias
+      }})
+
+      if(alias_db){
+        throw new Error('Alias already in DB')
+      }
+
       const shortUrl = await prisma.shortURL.create({
         data: {
           alias: customAlias,
           fullUrl: url,
-          ownerId: currentUser.id
+          ownerId: currentUser.id,
         },
       });
 
       return NextResponse.json({ shortUrl: shortUrl.alias });
     }
 
-
     // Hash URL String with MD5 and encode it to base64 then get only the first 7 characters.
-    const shortUrl_string = createHash('md5')
+
+      const shortUrl_string = createHash('md5')
       .update(url)
       .digest('base64')
       .replaceAll(/[+/=\\]/g, '')
       .slice(0, 7);
+
 
     // Check if alias already exists on DB, if true return alias.
 
@@ -64,6 +73,7 @@ export async function POST(request: Request) {
     const shortUrl = await prisma.shortURL.create({
       data: {
         alias: shortUrl_string,
+        ownerId: currentUser ? currentUser.id : null,
         fullUrl: url,
       },
     });
