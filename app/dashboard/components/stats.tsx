@@ -1,6 +1,9 @@
-'use client';
+interface StatsProps {
+  views: number;
+  totalUrls: number;
+}
 
-const Stats = () => {
+const Stats: React.FC<StatsProps> = ({ views, totalUrls }) => {
   return (
     <div className='stats bg-base-200 shadow'>
       <div className='stat'>
@@ -20,10 +23,9 @@ const Stats = () => {
           </svg>
         </div>
         <div className='stat-title'>Total views</div>
-        <div className='stat-value'>31K</div>
+        <div className='stat-value'>{views}</div>
       </div>
 
-    
       <div className='stat'>
         <div className='stat-figure text-secondary'>
           <svg
@@ -41,10 +43,10 @@ const Stats = () => {
           </svg>
         </div>
         <div className='stat-title'>Total ShortURL Links</div>
-        <div className='stat-value'>1,200</div>
+        <div className='stat-value'>{totalUrls}</div>
       </div>
     </div>
   );
 };
 
-export default Stats
+export default Stats;
