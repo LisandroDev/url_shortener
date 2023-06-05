@@ -1,4 +1,3 @@
-const { secondary } = require('daisyui/src/colors/colorNames');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
