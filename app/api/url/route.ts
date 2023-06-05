@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
-import prisma from '../../libs/prismadb';
+import prisma from '@/app/libs/prismadb';
 import isURL from 'validator/lib/isURL';
 import getCurrentUser from '@/app/actions/getCurrentUser';
 
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     if (url_db) {
       return NextResponse.json({ shortUrl: url_db.alias });
     }
-
+    
     // Save URL to DB.
 
     const shortUrl = await prisma.shortURL.create({
@@ -84,3 +84,4 @@ export async function POST(request: Request) {
     return new NextResponse('Error', { status: 500 });
   }
 }
+

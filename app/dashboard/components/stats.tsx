@@ -5,7 +5,7 @@ interface StatsProps {
 
 const Stats: React.FC<StatsProps> = ({ views, totalUrls }) => {
   return (
-    <div className='stats bg-base-200 shadow'>
+    <div className='stats stats-vertical sm:stats-horizontal bg-base-200 shadow'>
       <div className='stat'>
         <div className='stat-figure text-primary'>
           <svg
