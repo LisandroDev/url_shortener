@@ -2,13 +2,13 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
 import { ShortURL } from '@prisma/client';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+
 
 interface TableProps {
   urls: ShortURL[];
+  handleDelete: () => void;
+  handleSelect: (isChecked: boolean, selectedId: ShortURL['id']) => void;
 }
 
 interface TableItemProps {
@@ -49,39 +49,11 @@ const TableItem: React.FC<TableItemProps> = ({ url, HandleSelect }) => {
   );
 };
 
-const Table: React.FC<TableProps> = ({ urls }) => {
-  const [shortUrls, setShortUrls] = useState<ShortURL[]>([]);
-  const [selectedUrlsId, setSelectedUrlsId] = useState<ShortURL['id'][]>([]);
+const Table: React.FC<TableProps> = ({ urls, handleSelect, handleDelete}) => {
+  
+ 
 
-  useEffect(() => {
-    setShortUrls(urls);
-  }, [urls]);
 
-  const handleDelete = async () => {
-    axios
-      .post('/api/url/delete', { urlsToDelete: selectedUrlsId })
-      .then(() => {
-        const filteredShortUrls = shortUrls.filter((shortUrl) => !selectedUrlsId.includes(shortUrl.id))
-        setShortUrls(filteredShortUrls)
-      })
-      .finally(() => setSelectedUrlsId([]))
-      .catch((error) => toast.error(error));
-
-  };
-
-  const handleSelect = (isChecked: boolean, selectedId: ShortURL['id']) => {
-    const copyOfArray = selectedUrlsId.slice();
-
-    if (isChecked) {
-      copyOfArray.push(selectedId);
-      setSelectedUrlsId(copyOfArray);
-    } else {
-      const filteredArray = copyOfArray.filter(
-        (ShortUrlId) => ShortUrlId != selectedId
-      );
-      setSelectedUrlsId(filteredArray);
-    }
-  };
 
   return (
     <div className='overflow-x-auto w-full px-4 '>
@@ -99,7 +71,7 @@ const Table: React.FC<TableProps> = ({ urls }) => {
           </tr>
         </thead>
 
-        {shortUrls.map((url) => (
+        {urls.map((url) => (
           <TableItem HandleSelect={handleSelect} key={url.id} url={url} />
         ))}
       </table>
