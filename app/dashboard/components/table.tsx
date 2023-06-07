@@ -75,7 +75,7 @@ const Table: React.FC<TableProps> = ({ urls, handleSelect, handleDelete}) => {
           <TableItem HandleSelect={handleSelect} key={url.id} url={url} />
         ))}
       </table>
-      <div>
+      <div className='flex flex-col place-items-center mt-8'>
         <button onClick={() => handleDelete()} className='btn btn-info'>
           Delete all selected
         </button>
