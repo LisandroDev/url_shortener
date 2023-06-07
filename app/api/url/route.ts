@@ -44,10 +44,10 @@ export async function POST(request: Request) {
         },
       });
 
-      return NextResponse.json({ shortUrl: shortUrl.alias });
+      return NextResponse.json({ shortUrl: shortUrl.alias, ownership: true });
     }
 
-    // Hash URL String with MD5 and encode it to base64 then get only the first 7 characters.
+    // Hash URL String with MD5 and encode it to base64 then retrieve only the first 7 characters.
 
       const shortUrl_string = createHash('md5')
       .update(url)
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       .slice(0, 7);
 
 
-    // Check if alias already exists on DB, if true return alias.
+    // Check if alias already exists in DB, if true return alias.
 
     const url_db = await prisma.shortURL.findFirst({
       where: {
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     });
 
     if (url_db) {
-      return NextResponse.json({ shortUrl: url_db.alias });
+      return NextResponse.json({ shortUrl: url_db.alias, ownership: false });
     }
     
     // Save URL to DB.
@@ -78,10 +78,10 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ shortUrl: shortUrl.alias });
+    return NextResponse.json({ shortUrl: shortUrl.alias, ownership: true });
   } catch (error) {
     console.log('ENDPOINT: API/URL | METHOD:POST MESSAGE: ', error);
-    return new NextResponse('Error', { status: 500 });
+    return new NextResponse( `${error}` , { status: 500 });
   }
 }
 
