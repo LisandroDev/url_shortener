@@ -28,9 +28,16 @@ const UrlForm = () => {
     setIsLoading(true);
     axios
       .post('/api/url', data)
-      .then((res) => setNewUrl(res.data.shortUrl))
+      .then((res) => {
+        setNewUrl(res.data.shortUrl)
+        if(!res.data.ownership){
+          toast.info('The URL has already been shortened, and the ownership of this alias does not belong to you. To gain ownership, please create a custom alias.')
+        }
+      })
       .finally(() => setIsLoading(false))
-      .catch((error) => toast.error('Fail'));
+      .catch((error) => {
+        toast.error(error.response.data)
+      console.log(error)});
   };
 
   return (
