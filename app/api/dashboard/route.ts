@@ -1,6 +1,6 @@
-import getCurrentUser from '@/app/actions/getCurrentUser';
-import getStats from '@/app/actions/getStats';
-import getUrls from '@/app/actions/getUrls';
+import getCurrentUser from '@/app/utils/getCurrentUser';
+import getStats from '@/app/utils/getStats';
+import getUrls from '@/app/utils/getUrls';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {

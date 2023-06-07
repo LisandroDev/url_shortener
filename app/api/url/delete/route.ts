@@ -1,6 +1,7 @@
-import getCurrentUser from '@/app/actions/getCurrentUser';
+import getCurrentUser from '@/app/utils/getCurrentUser';
 import prisma from '@/app/libs/prismadb';
 import { NextResponse } from 'next/server';
+import { UnauthorizedError } from '@/app/error/Error';
 
 export async function POST(request: Request) {
   try {
@@ -10,7 +11,7 @@ export async function POST(request: Request) {
     const { urlsToDelete } = body;
 
     if (!currentUser) {
-      throw new Error('User not authenticated');
+      throw new UnauthorizedError('User not authenticated');
     }
 
     const deleteUrls = await prisma.shortURL.deleteMany({
@@ -22,8 +23,8 @@ export async function POST(request: Request) {
     }
 
     return new NextResponse('Success', { status: 200 });
-  } catch (error) {
-    console.log('ENDPOINT: API/URL | METHOD:DELETE MESSAGE: ', error);
-    return new NextResponse('Error', { status: 500 });
+  } catch (error: any) {
+    console.log('ENDPOINT: API/URL/DELETE | METHOD:DELETE MESSAGE: ', error);
+    return new NextResponse('Error', { status: error.statusCode || 500 });
   }
 }

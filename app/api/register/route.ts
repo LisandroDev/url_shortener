@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import prisma from '../../libs/prismadb';
 import isEmail from 'validator/lib/isEmail';
 import { NextResponse, NextRequest } from 'next/server';
+import { BadRequestError } from '@/app/error/Error';
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,7 +10,7 @@ export async function POST(request: NextRequest) {
     const { email, password } = body;
 
     if (!isEmail(email)) {
-      throw new Error('Not a valid email');
+      throw new BadRequestError('Not a valid email');
     }
 
     const emailDB = await prisma.user.findUnique({where:{email: email}})
@@ -28,8 +29,8 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(user);
-  } catch (error) {
+  } catch (error: any) {
     console.log('ENDPOINT: API/REGISTER | METHOD:POST MESSAGE: ', error);
-    return new NextResponse('Error', { status: 500 });
+    return new NextResponse( `${error.message}` , { status: error.statusCode || 500 });
   }
 }

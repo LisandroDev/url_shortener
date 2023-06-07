@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import prisma from '@/app/libs/prismadb';
 import isURL from 'validator/lib/isURL';
-import getCurrentUser from '@/app/actions/getCurrentUser';
+import getCurrentUser from '@/app/utils/getCurrentUser';
+import { BadRequestError, ExistenceConflictError } from '@/app/error/Error';
 
 export async function POST(request: Request) {
   try {
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
     const { url, customAlias } = body;
 
     if (!isURL(url)) {
-      throw new Error('Url in request is not a valid one!');
+      throw new BadRequestError('Url in request is not a valid one!');
     }
 
     // If Alias provided and User logged.
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
       }})
 
       if(alias_db){
-        throw new Error('Alias already in DB')
+        throw new ExistenceConflictError('Alias already in DB')
       }
 
       const shortUrl = await prisma.shortURL.create({
@@ -58,14 +59,14 @@ export async function POST(request: Request) {
 
     // Check if alias already exists in DB, if true return alias.
 
-    const url_db = await prisma.shortURL.findFirst({
+    const existingUrl = await prisma.shortURL.findFirst({
       where: {
         alias: shortUrl_string,
       },
     });
 
-    if (url_db) {
-      return NextResponse.json({ shortUrl: url_db.alias, ownership: false });
+    if (existingUrl) {
+      return NextResponse.json({ shortUrl: existingUrl.alias, ownership: false });
     }
     
     // Save URL to DB.
@@ -79,9 +80,9 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ shortUrl: shortUrl.alias, ownership: true });
-  } catch (error) {
+  } catch (error: any) {
     console.log('ENDPOINT: API/URL | METHOD:POST MESSAGE: ', error);
-    return new NextResponse( `${error}` , { status: 500 });
+    return new NextResponse( `${error.message}` , { status: error.statusCode || 500 });
   }
 }
 
