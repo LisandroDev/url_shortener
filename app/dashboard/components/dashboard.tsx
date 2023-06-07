@@ -61,8 +61,11 @@ const Dashboard = () => {
         updateStats(filteredShortUrls);
         setUrls(filteredShortUrls);
       })
-      .finally(() => setSelectedUrlsId([]))
-      .catch((error) => toast.error('fail'));
+      .finally(() => {
+        setSelectedUrlsId([]);
+        toast.success('Short URLs deleted succesfully')
+      })
+      .catch((error) => toast.error('Error occurred during deletion. Please retry.'));
   };
 
   const handleSelect = (isChecked: boolean, selectedId: ShortURL['id']) => {
@@ -101,7 +104,7 @@ const Dashboard = () => {
   } else {
     return (
       <>
-        <button className='btn  btn-primary loading'>Loading</button>
+        <button className='btn btn-xs btn-primary loading'>Loading</button>
       </>
     );
   }
