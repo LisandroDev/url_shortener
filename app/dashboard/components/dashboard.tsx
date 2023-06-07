@@ -24,11 +24,19 @@ const Dashboard = () => {
         .get('/api/dashboard')
         .then((res) => {
           setIsLoading(true);
-          setStats({totalUrls: res.data.stats.totalLinks | 0, views: res.data.stats.totalViews.views | 0});
+          res.data.stats
+            ? setStats({
+                totalUrls: res.data.stats.totalLinks,
+                views: res.data.stats.totalViews.views,
+              })
+            : setStats({ views: 0, totalUrls: 0 });
           setUrls(res.data.urls);
         })
         .finally(() => setIsLoading(false))
-        .catch((error) => toast.error('Fail'));
+        .catch((error) => {
+          console.log(error);
+          toast.error('Fail');
+        });
     };
     fetchData();
   }, []);
@@ -40,7 +48,6 @@ const Dashboard = () => {
   };
 
   const handleDelete = async () => {
-
     if (!urls) {
       return null;
     }
@@ -51,14 +58,11 @@ const Dashboard = () => {
         const filteredShortUrls = urls.filter(
           (shortUrl) => !selectedUrlsId.includes(shortUrl.id)
         );
-        const shortUrlsToUpdate = urls.filter((shortUrl) =>
-          selectedUrlsId.includes(shortUrl.id)
-        );
-        updateStats(shortUrlsToUpdate);
+        updateStats(filteredShortUrls);
         setUrls(filteredShortUrls);
       })
       .finally(() => setSelectedUrlsId([]))
-      .catch((error) => toast.error(error));
+      .catch((error) => toast.error('fail'));
   };
 
   const handleSelect = (isChecked: boolean, selectedId: ShortURL['id']) => {
@@ -82,7 +86,15 @@ const Dashboard = () => {
           <Stats totalUrls={stats.totalUrls} views={stats.views} />
         </section>
         <section>
-          {urls ? <Table urls={urls} handleDelete={handleDelete} handleSelect={handleSelect}/> : ''}
+          {urls ? (
+            <Table
+              urls={urls}
+              handleDelete={handleDelete}
+              handleSelect={handleSelect}
+            />
+          ) : (
+            ''
+          )}
         </section>
       </>
     );
