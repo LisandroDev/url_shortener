@@ -10,47 +10,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model ShortURL {
-  id Int @id @default(autoincrement())
-  alias String
-  fullUrl String
-  views Int @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  owner User? @relation(fields: [ownerId], references: [id])
-  ownerId Int?
+  id              Int              @id @default(autoincrement())
+  alias           String
+  fullUrl         String
+  views           Int              @default(0)
+  viewsPerCountry CountryViews[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  owner           User?            @relation(fields: [ownerId], references: [id])
+  ownerId         Int?
+}
+
+model CountryViews {
+  id           Int       @id @default(autoincrement())
+  country_name String
+  views        Int
+  ShortURL     ShortURL? @relation(fields: [shortURLId], references: [id])
+  shortURLId   Int?
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String? @unique
+  id             Int        @id @default(autoincrement())
+  email          String?    @unique
   hashedPassword String?
   emailVerified  DateTime?
-  image String?
-  name String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  shortUrls ShortURL[]
+  image          String?
+  name           String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  shortUrls      ShortURL[]
 
   accounts Account[]
 }
 
 model Account {
-  id Int @id @default(autoincrement()) 
-  userId             Int   
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  
-  access_token       String?  
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  
-  session_state      String?
-
+  id                Int     @id @default(autoincrement())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([provider, providerAccountId])
 }
