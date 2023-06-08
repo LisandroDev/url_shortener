@@ -8,7 +8,6 @@ export async function POST(request: Request){
         const body = await request.json()
         const user = await getCurrentUser()
 
-        console.log(body)
         const { shortUrlId } = body.data
         
         if(!user){
