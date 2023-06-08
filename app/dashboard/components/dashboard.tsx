@@ -52,6 +52,10 @@ const Dashboard = () => {
       return null;
     }
 
+    if(urls.length === 0){
+      return null;
+    }
+
     axios
       .post('/api/url/delete', { urlsToDelete: selectedUrlsId })
       .then(() => {
