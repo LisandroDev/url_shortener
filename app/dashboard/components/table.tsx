@@ -44,7 +44,7 @@ const TableItem: React.FC<TableItemProps> = ({ url, HandleSelect }) => {
         <td>
           <span className='font-bold'>{url.alias}</span>
         </td>
-        <td>
+        <td className='text-center flex ml-4 items-center sm:inline-block'>
           {url.views}
           <CountriesViews shortUrlId={url.id} />
         </td>
@@ -54,10 +54,6 @@ const TableItem: React.FC<TableItemProps> = ({ url, HandleSelect }) => {
 };
 
 const Table: React.FC<TableProps> = ({ urls, handleSelect, handleDelete}) => {
-  
- 
-
-
 
   return (
     <div className='overflow-x-auto w-full px-4 '>
