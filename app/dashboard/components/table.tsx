@@ -46,7 +46,7 @@ const TableItem: React.FC<TableItemProps> = ({ url, HandleSelect }) => {
         </td>
         <td className='text-center flex ml-4 items-center sm:inline-block'>
           {url.views}
-          <CountriesViews shortUrlId={url.id} />
+          <CountriesViews shortUrlId={url.id} shortUrlAlias={url.alias} />
         </td>
       </tr>
     </tbody>
