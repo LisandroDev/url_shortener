@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 
 const User = () => {
-  const { status } = useSession();
+  const { data: session ,status } = useSession();
   
   switch(status){
     case 'loading':
@@ -18,7 +18,7 @@ const User = () => {
         <div className='dropdown dropdown-end'>
           <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
             <div className='w-10 rounded-full'>
-              <img src='https://img.freepik.com/free-icon/user_318-563642.jpg?w=360' />
+              <img  referrerPolicy='no-referrer' src={session.user?.image || 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360'  }/>
             </div>
           </label>
           <ul
