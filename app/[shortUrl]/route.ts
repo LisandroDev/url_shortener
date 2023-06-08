@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import prisma from '../libs/prismadb';
 import { NextResponse, NextRequest } from 'next/server';
-import getCountryName from '../utils/getCountryName';
+import getCountryName from '../api/utils/getCountryName';
 import { updateOrCreateCountryViews } from './utils/updateOrCreateCountryViews';
 
 
@@ -23,9 +23,9 @@ export async function GET(request: NextRequest) {
 
   // Retrieve the country name from the Geolocation API based on the IP provided in the headers then update or create Country Views.
 
-  const requestFromCountryName = await getCountryName(forwardedIP);
+  const requestFromCountryName = process.env.NODE_ENV ==='production' ? null : await getCountryName(forwardedIP) ;
 
-  if (requestFromCountryName) {
+  if (requestFromCountryName ) {
     try {
       await updateOrCreateCountryViews(requestFromCountryName, url_db);
     } catch (error) {
