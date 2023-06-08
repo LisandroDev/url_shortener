@@ -15,7 +15,7 @@ model ShortURL {
   alias           String
   fullUrl         String
   views           Int              @default(0)
-  viewsPerCountry CountryViews[]
+  viewsPerCountry CountryViews[]  
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   owner           User?            @relation(fields: [ownerId], references: [id])
@@ -26,7 +26,7 @@ model CountryViews {
   id           Int       @id @default(autoincrement())
   country_name String
   views        Int
-  ShortURL     ShortURL? @relation(fields: [shortURLId], references: [id])
+  ShortURL     ShortURL? @relation(fields: [shortURLId], references: [id], onDelete: Cascade)
   shortURLId   Int?
 }
 
