@@ -3,6 +3,7 @@
 'use client';
 
 import { ShortURL } from '@prisma/client';
+import CountriesViews from './countriesviews';
 
 
 interface TableProps {
@@ -43,7 +44,10 @@ const TableItem: React.FC<TableItemProps> = ({ url, HandleSelect }) => {
         <td>
           <span className='font-bold'>{url.alias}</span>
         </td>
-        <td>{url.views}</td>
+        <td>
+          {url.views}
+          <CountriesViews shortUrlId={url.id} />
+        </td>
       </tr>
     </tbody>
   );
