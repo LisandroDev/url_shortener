@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
   // Retrieve the country name from the Geolocation API based on the IP provided in the headers then update or create Country Views.
 
-  const requestFromCountryName = process.env.NODE_ENV ==='production' ? null : await getCountryName(forwardedIP) ;
+  const requestFromCountryName = process.env.NODE_ENV ==='production' ? await getCountryName(forwardedIP)  : null;
 
   if (requestFromCountryName ) {
     try {
