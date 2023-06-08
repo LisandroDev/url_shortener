@@ -1,4 +1,4 @@
-import getCurrentUser from '@/app/utils/getCurrentUser';
+import getCurrentUser from '@/app/api/utils/getCurrentUser';
 import prisma from '@/app/libs/prismadb';
 import { NextResponse } from 'next/server';
 import { UnauthorizedError } from '@/app/error/Error';

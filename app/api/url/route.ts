@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createHash } from 'node:crypto';
 import prisma from '@/app/libs/prismadb';
 import isURL from 'validator/lib/isURL';
-import getCurrentUser from '@/app/utils/getCurrentUser';
+import getCurrentUser from '@/app/api/utils/getCurrentUser';
 import { BadRequestError, ExistenceConflictError } from '@/app/error/Error';
 
 export async function POST(request: Request) {
