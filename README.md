@@ -5,6 +5,13 @@
   <h1>
     URL Shortener
   </h1>
+
+![Logged](https://i.postimg.cc/9XY1ZcHh/screencapture-urlshort-psi-vercel-app-2023-07-14-19-22-47.png)
+
+### Live Preview at: https://urlshort-psi.vercel.app/
+
+
+
 </div>
 <div align="center">
 </div>
@@ -21,5 +28,7 @@ Simplify and optimize your links with our powerful tool. Transform long URLs int
  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"></img>
 </div>
 
+
   
+
 </div>
